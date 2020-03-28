@@ -1,0 +1,32 @@
+@import "./base/vars";
+
+.providerList-item::before {
+  background-color: green;
+  border: 1px solid forestgreen;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  height: $SPACING_2X;
+  margin-right: $SPACING_1X;
+  width: $SPACING_2X;
+}
+
+.providerList-item {
+  align-items: center;
+  display: flex;
+  padding-left: $SPACING_1X * 3;
+}
+
+.providerList-item + .providerList-item {
+  margin-top: $SPACING_1X;
+}
+
+.mix-providerList-item_hasIssueNow::before {
+  background-color: lightcoral;
+  border: 1px solid red;
+}
+
+.mix-providerList-item_hasRecentIssue::before {
+  background-color: $COLOR_PRIMARY;
+  border: 1px solid yellow;
+}

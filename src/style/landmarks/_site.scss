@@ -1,0 +1,46 @@
+@import "../base/vars";
+
+html,
+body {
+  background: transparent;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  font-family: monospace;
+}
+
+header {
+  background-color: $COLOR_DARK;
+  border-top-left-radius: $SPACING_1X;
+  border-top-right-radius: $SPACING_1X;
+  border-bottom: 1px solid $COLOR_PRIMARY;
+  box-shadow: 0 2px 7x 3px rgba(255, 255, 255, 0.3);
+  color: $COLOR_LIGHT;
+  font-size: 14px;
+  font-weight: 600;
+  padding: $SPACING_2X;
+}
+
+section {
+  background-color: $COLOR_LIGHT;
+  color: $COLOR_DARK;
+  height: calc(100vh - 90px);
+  overflow-y: scroll;
+  padding-top: $SPACING_2X;
+  padding-bottom: $SPACING_2X;
+}
+
+section::-webkit-scrollbar {
+  display: none;
+}
+
+footer {
+  background-color: $COLOR_DARK;
+  border-top: 2px solid $COLOR_PRIMARY;
+  border-bottom-left-radius: $SPACING_1X;
+  border-bottom-right-radius: $SPACING_1X;
+  color: $COLOR_LIGHT;
+  font-weight: 600;
+  padding: $SPACING_2X;
+}

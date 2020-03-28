@@ -1,0 +1,154 @@
+import * as path from 'path';
+import * as Electron from 'electron';
+import { app, Menu, shell } from 'electron';
+import { is, appMenu, aboutMenuItem, openUrlMenuItem, openNewGitHubIssue, debugInfo } from 'electron-util';
+import config from './config';
+
+const showPreferences = () => {
+    // Show the app's preferences here
+};
+
+const helpSubmenu: Electron.MenuItemConstructorOptions[] = [
+  openUrlMenuItem({
+    label: 'Website',
+    url: 'https://github.com/n8rzz/undefined'
+  }),
+  openUrlMenuItem({
+    label: 'Source Code',
+    url: 'https://github.com/n8rzz/undefined'
+  }),
+];
+
+if (!is.macos) {
+  helpSubmenu.push(
+    {
+      type: 'separator'
+    },
+    aboutMenuItem({
+      icon: path.join(__dirname, 'static', 'icon.png'),
+      text: 'Created by nate geslin'
+    })
+  );
+}
+
+const debugSubmenu: Electron.MenuItemConstructorOptions[] = [
+  {
+    label: 'Show Settings',
+    click() {
+      config.openInEditor();
+    }
+  },
+  {
+    label: 'Show App Data',
+    click() {
+      shell.openItem(app.getPath('userData'));
+    }
+  },
+  {
+    type: 'separator'
+  },
+  {
+    label: 'Delete Settings',
+    click() {
+      config.clear();
+      app.relaunch();
+      app.quit();
+    }
+  },
+  {
+    label: 'Delete App Data',
+    click() {
+      shell.moveItemToTrash(app.getPath('userData'));
+      app.relaunch();
+      app.quit();
+    }
+  }
+];
+
+const macosTemplate: Electron.MenuItemConstructorOptions[] = [
+  appMenu([
+    {
+      label: 'Preferences…',
+      accelerator: 'Command+,',
+      click() {
+        showPreferences();
+      }
+    }
+  ]),
+  {
+    role: 'fileMenu',
+    submenu: [
+      {
+          label: 'Custom'
+      },
+      {
+          type: 'separator'
+      },
+      {
+          role: 'close'
+      }
+    ]
+  },
+  {
+    role: 'editMenu'
+  },
+  {
+    role: 'viewMenu'
+  },
+  {
+    role: 'windowMenu'
+  },
+  {
+    role: 'help',
+    submenu: helpSubmenu
+  }
+];
+
+// Linux and Windows
+const otherTemplate: Electron.MenuItemConstructorOptions[] = [
+    {
+        role: 'fileMenu',
+        submenu: [
+            {
+                label: 'Custom'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Settings',
+                accelerator: 'Control+,',
+                click() {
+                    showPreferences();
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'quit'
+            }
+        ]
+    },
+    {
+        role: 'editMenu'
+    },
+    {
+        role: 'viewMenu'
+    },
+    {
+        role: 'help',
+        submenu: helpSubmenu
+    }
+];
+
+const template: Electron.MenuItemConstructorOptions[] = process.platform === 'darwin' ? macosTemplate : otherTemplate;
+
+if (is.development) {
+    template.push({
+        label: 'Debug',
+        submenu: debugSubmenu
+    });
+}
+
+export default Menu.buildFromTemplate(template);
