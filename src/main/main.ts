@@ -46,13 +46,13 @@ const createMainWindow = async () => {
     mainWindow = undefined;
   });
 
-  await win.loadFile(path.join(__dirname, 'index.html'));
+  await win.loadFile(path.join(__dirname, '..', 'index.html'));
 
   return win;
 };
 
 const createTrayIcon = () => {
-  const iconPath = path.join(__dirname, 'assets/little-birdie-light-icon.png');
+  const iconPath = path.join(__dirname, '..', 'assets/little-birdie-light-icon.png');
   const icon = nativeImage.createFromPath(iconPath);
   const t = new Tray(icon);
 
@@ -122,6 +122,7 @@ const toggleWindow = () => {
 
 (async () => {
   await app.whenReady();
+  app.dock.hide();
   Menu.setApplicationMenu(menu);
 
   mainWindow = await createMainWindow();

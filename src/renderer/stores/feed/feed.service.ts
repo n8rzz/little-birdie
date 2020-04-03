@@ -1,5 +1,6 @@
 import * as Parser from 'rss-parser';
 import { FEEDS } from './feed.constant';
+import { IFeed } from './models/i-feed';
 
 function _buildFeedRequestList() {
     const rssParser = new Parser();
@@ -16,12 +17,12 @@ function _buildFeedRequestList() {
     }, []);
 }
 
-export const getFeedList = () => {
+export const getFeedList = (): Promise<IFeed[]> => {
     const feedRequestList = _buildFeedRequestList();
 
     return Promise.all(feedRequestList)
-        .then((res) => res)
-        .catch((err) => {
-            throw err;
-        });
+      .then((res) => res)
+      .catch((err) => {
+          throw err;
+      });
 };

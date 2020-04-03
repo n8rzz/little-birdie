@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedItem should match snapshot 1`] = `
+<li
+  className="providerList-item"
+>
+  <a
+    href="#"
+  >
+    heroku
+  </a>
+</li>
+`;

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FeedList should match snapshot 1`] = `
+<section>
+  <ul>
+    <li
+      className="providerList-item"
+    >
+      <a
+        href="#"
+      >
+        heroku
+      </a>
+    </li>
+    <li
+      className="providerList-item"
+    >
+      <a
+        href="#"
+      >
+        heroku
+      </a>
+    </li>
+    <li
+      className="providerList-item"
+    >
+      <a
+        href="#"
+      >
+        heroku
+      </a>
+    </li>
+  </ul>
+</section>
+`;

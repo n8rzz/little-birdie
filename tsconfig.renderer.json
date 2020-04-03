@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "es6",
+    "moduleResolution": "classic",
+    "target": "es5",
+    "outDir": "./dist/renderer",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "jsx": "react",
+    "allowJs": true,
+    "typeRoots": ["./src/types", "node_modules/@types"],
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    "src/main"
+  ],
+  "include": [
+    "src/renderer/**/*"
+  ]
+}

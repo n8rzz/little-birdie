@@ -1,4 +1,4 @@
-export interface IFeedProvider {
+export interface IFeedChannel {
     isActive: boolean;
     name: string;
     title: string;

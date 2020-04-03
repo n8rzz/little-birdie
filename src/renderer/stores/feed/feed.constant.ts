@@ -1,6 +1,6 @@
-import { IFeedProvider } from "./models/i-feed-provider";
+import { IFeedChannel } from './models/i-feed-channel';
 
-export const FEEDS: IFeedProvider[] = [
+export const FEEDS: IFeedChannel[] = [
     {
         name: 'Harvest',
         title: 'Harvest',
