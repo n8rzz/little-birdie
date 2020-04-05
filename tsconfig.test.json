@@ -14,11 +14,10 @@
     "skipLibCheck": true
   },
   "exclude": [
-    "node_modules",
     "src/main"
   ],
   "include": [
     "src/renderer/**/*",
-    "src/shared/**/*"
+    "src/shared/**/*",
   ]
 }
