@@ -1,6 +1,6 @@
+import { ipcRenderer } from 'electron';
 import React, { useEffect, useCallback } from 'react';
-import { getFeedList } from '../stores/feed/feed.service'
-import { IFeed } from '../stores/feed/models/i-feed'
+// import { IFeed } from '../stores/feed/models/i-feed'
 import { FeedList } from './feed/FeedList';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -8,19 +8,23 @@ import { Footer } from './Footer';
 interface IProps {}
 
 export const App: React.FC<IProps> = () => {
-  // const [items, setItems] = React.useState<IFeed[]>([]);
+  const [items, setItems] = React.useState<any>([]);
+  const [didMakeFeedRequest, setDidMakeFeedRequest] = React.useState<boolean>(false);
 
-  useEffect(() => getParsedFeedRss);
+  if (!didMakeFeedRequest) {
+    console.log('rss-request');
 
-  const getParsedFeedRss = useCallback(async () => {
-    console.log('===');
-    Promise.resolve(true);
-    // const feeds = await getFeedList();
+    ipcRenderer.send('rss-request');
+  }
 
-    // setItems(feeds);
-  }, []);
+  ipcRenderer.on('rss-success', (event, data) => {
+    console.log('rss-success', data);
 
-  console.log('$$$');
+    setItems(data);
+    setDidMakeFeedRequest(!didMakeFeedRequest);
+  });
+
+  console.log('$$$', items);
 
   return (
     <div className="container">

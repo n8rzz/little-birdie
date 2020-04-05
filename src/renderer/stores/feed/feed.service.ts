@@ -1,4 +1,4 @@
-import * as Parser from 'rss-parser';
+import Parser from 'rss-parser';
 import { FEEDS } from './feed.constant';
 import { IFeed } from './models/i-feed';
 

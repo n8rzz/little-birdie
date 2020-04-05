@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as Electron from 'electron';
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron';
 import { is } from 'electron-util';
 import * as unhandled from 'electron-unhandled';
 /// const {autoUpdater} = require('electron-updater');
@@ -8,6 +8,7 @@ import * as debug from 'electron-debug';
 import * as contextMenu from 'electron-context-menu';
 import config from './config';
 import menu from './menu';
+import { getFeedList } from './feed.service';
 
 unhandled();
 debug();
@@ -29,6 +30,7 @@ contextMenu();
 // Prevent window from being garbage collected
 let mainWindow: Electron.BrowserWindow;
 let tray: Electron.Tray;
+let rssItems: any[] = [];
 
 const createMainWindow = async () => {
   const win = new BrowserWindow({
@@ -38,6 +40,10 @@ const createMainWindow = async () => {
     frame: false,
     resizable: false,
     transparent: true,
+    webPreferences: {
+      // contextIsolation: false,
+      nodeIntegration: true,
+    }
   });
 
   win.on('closed', () => {
@@ -110,6 +116,25 @@ app.on('activate', async () => {
   mainWindow = await createMainWindow();
 });
 
+ipcMain.addListener('rss-request', async (event: any) => {
+  const now = (new Date()).getTime();
+  const lastUpdateTimestamp = config.get('lastUpdateTimestamp');
+  const distanceFromNow = now - lastUpdateTimestamp;
+
+  console.log('distanceFromNow', distanceFromNow);
+
+  if (distanceFromNow < 5000) {
+    return;
+  }
+
+  await getFeedList();
+
+  console.log('rssItems', rssItems.length);
+
+  config.set('lastUpdateTimestamp', (new Date()).getTime());
+  event.sender.send('rss-success', rssItems);
+});
+
 const toggleWindow = () => {
   if (mainWindow.isVisible()) {
     mainWindow.hide()
@@ -120,18 +145,24 @@ const toggleWindow = () => {
   showWindow();
 };
 
+const loadFeedItems = async () => {
+  rssItems = await getFeedList();
+}
+
 (async () => {
+  config.clear();
+
   await app.whenReady();
+  await loadFeedItems();
+
   app.dock.hide();
   Menu.setApplicationMenu(menu);
 
   mainWindow = await createMainWindow();
   tray = createTrayIcon();
 
-  const refreshInterval = config.get('refreshInterval');
-  const shouldNotifyOnNewAlert = config.get('shouldNotifyOnNewAlert');
-
-  console.log(refreshInterval, shouldNotifyOnNewAlert);
-
-  // mainWindow.webContents.executeJavaScript(`document.querySelector('header p').textContent = 'Your favorite animal is ${favoriteAnimal}'`);
+  const lastUpdateTimestamp = config.get('lastUpdateTimestamp');
+  // const refreshInterval = config.get('refreshInterval');
+  // const shouldNotifyOnNewAlert = config.get('shouldNotifyOnNewAlert');
+  console.log('lastUpdateTimestamp: ', lastUpdateTimestamp);
 })();

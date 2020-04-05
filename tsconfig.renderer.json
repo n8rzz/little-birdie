@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "module": "es6",
-    "moduleResolution": "classic",
+    "moduleResolution": "node",
     "target": "es5",
     "outDir": "./dist/renderer",
     "sourceMap": true,
