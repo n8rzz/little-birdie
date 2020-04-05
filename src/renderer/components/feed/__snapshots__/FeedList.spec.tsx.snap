@@ -7,27 +7,36 @@ exports[`FeedList should match snapshot 1`] = `
       className="providerList-item"
     >
       <a
-        href="#"
+        href="https://www.harveststatus.com"
       >
-        heroku
+        Harvest
       </a>
     </li>
     <li
       className="providerList-item"
     >
       <a
-        href="#"
+        href="https://status.freshbooks.com"
       >
-        heroku
+        Freshbooks
       </a>
     </li>
     <li
       className="providerList-item"
     >
       <a
-        href="#"
+        href="https://status.npmjs.org"
       >
-        heroku
+        Npm
+      </a>
+    </li>
+    <li
+      className="providerList-item"
+    >
+      <a
+        href="https://www.githubstatus.com"
+      >
+        GitHub
       </a>
     </li>
   </ul>

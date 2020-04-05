@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React from 'react';
+import { IFeed } from '../../../shared/domain/feed/models/i-feed';
 
 interface IProps {
-  name: string;
-  url?: string;
+  item: IFeed;
 }
 
-export const FeedItem: React.FC<IProps> = () => {
+export const FeedItem: React.FC<IProps> = (props: IProps) => {
   return (
     <li className="providerList-item">
-      <a href="#">heroku</a>
+      <a href={props.item.link}>{ props.item.name }</a>
     </li>
   );
 };

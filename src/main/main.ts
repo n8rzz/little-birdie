@@ -6,9 +6,11 @@ import * as unhandled from 'electron-unhandled';
 /// const {autoUpdater} = require('electron-updater');
 import * as debug from 'electron-debug';
 import * as contextMenu from 'electron-context-menu';
+import { getFeedList } from '../shared/domain/feed/feed.service';
+import { IFeed } from '../shared/domain/feed/models/i-feed';
+import { IFeedChannel } from '../shared/domain/feed/models/i-feed-channel';
 import config from './config';
 import menu from './menu';
-import { getFeedList } from './feed.service';
 
 unhandled();
 debug();
@@ -30,7 +32,7 @@ contextMenu();
 // Prevent window from being garbage collected
 let mainWindow: Electron.BrowserWindow;
 let tray: Electron.Tray;
-let rssItems: any[] = [];
+let rssItems: IFeed[] = [];
 
 const createMainWindow = async () => {
   const win = new BrowserWindow({
@@ -52,13 +54,13 @@ const createMainWindow = async () => {
     mainWindow = undefined;
   });
 
-  await win.loadFile(path.join(__dirname, '..', 'index.html'));
+  await win.loadFile(path.join(__dirname, '../..', 'index.html'));
 
   return win;
 };
 
 const createTrayIcon = () => {
-  const iconPath = path.join(__dirname, '..', 'assets/little-birdie-light-icon.png');
+  const iconPath = path.join(__dirname, '../..', 'assets/little-birdie-light-icon.png');
   const icon = nativeImage.createFromPath(iconPath);
   const t = new Tray(icon);
 
@@ -124,15 +126,23 @@ ipcMain.addListener('rss-request', async (event: any) => {
   console.log('distanceFromNow', distanceFromNow);
 
   if (distanceFromNow < 5000) {
+    const storedFeedList = config.get('feedList');
+    rssItems = storedFeedList;
+
     return;
   }
 
   await getFeedList();
 
   console.log('rssItems', rssItems.length);
+  const res = {
+    channelList: [] as IFeedChannel[],
+    feedList: rssItems
+  };
 
+  config.set('feedList', rssItems);
   config.set('lastUpdateTimestamp', (new Date()).getTime());
-  event.sender.send('rss-success', rssItems);
+  event.sender.send('rss-success', res);
 });
 
 const toggleWindow = () => {
@@ -161,8 +171,7 @@ const loadFeedItems = async () => {
   mainWindow = await createMainWindow();
   tray = createTrayIcon();
 
-  const lastUpdateTimestamp = config.get('lastUpdateTimestamp');
-  // const refreshInterval = config.get('refreshInterval');
-  // const shouldNotifyOnNewAlert = config.get('shouldNotifyOnNewAlert');
-  console.log('lastUpdateTimestamp: ', lastUpdateTimestamp);
+  console.log('lastUpdateTimestamp: ', config.get('lastUpdateTimestamp'));
+  console.log('feedList: ', config.get('feedList'));
+  console.log('channelList: ', config.get('channelList'));
 })();

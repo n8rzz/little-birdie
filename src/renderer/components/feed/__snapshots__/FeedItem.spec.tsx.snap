@@ -5,9 +5,9 @@ exports[`FeedItem should match snapshot 1`] = `
   className="providerList-item"
 >
   <a
-    href="#"
+    href="https://www.harveststatus.com"
   >
-    heroku
+    Harvest
   </a>
 </li>
 `;

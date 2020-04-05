@@ -1,35 +1,42 @@
+import React from 'react';
 import { ipcRenderer } from 'electron';
-import React, { useEffect, useCallback } from 'react';
-// import { IFeed } from '../stores/feed/models/i-feed'
+import { IFeed } from '../../shared/domain/feed/models/i-feed';
+import { IFeedChannel } from '../../shared/domain/feed/models/i-feed-channel';
 import { FeedList } from './feed/FeedList';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
+// TODO: abstract to `shared/`
+interface IRssSuccess {
+  channelList: IFeedChannel[];
+  feedList: IFeed[];
+}
+
+// TODO: leverage `main` to inject data into index on initial load, then pass down as props
 interface IProps {}
 
 export const App: React.FC<IProps> = () => {
-  const [items, setItems] = React.useState<any>([]);
+  const [channelList, setChannelList] = React.useState<IFeedChannel[]>([]);
+  const [parsedFeedList, setParsedFeedList] = React.useState<IFeed[]>([]);
   const [didMakeFeedRequest, setDidMakeFeedRequest] = React.useState<boolean>(false);
 
+  // TODO: this should go away if initial data is passed as props
   if (!didMakeFeedRequest) {
-    console.log('rss-request');
-
+    // TODO: abstract to EventEnum
     ipcRenderer.send('rss-request');
   }
 
-  ipcRenderer.on('rss-success', (event, data) => {
-    console.log('rss-success', data);
-
-    setItems(data);
+  // TODO: abstract to EventEnum
+  ipcRenderer.on('rss-success', (event, data: IRssSuccess) => {
+    setChannelList(data.channelList);
+    setParsedFeedList(data.feedList);
     setDidMakeFeedRequest(!didMakeFeedRequest);
   });
-
-  console.log('$$$', items);
 
   return (
     <div className="container">
       <Header />
-      <FeedList items={['Github', 'travis', 'heroku']} />
+      <FeedList channelList={channelList} feedList={parsedFeedList} />
       <Footer />
     </div>
   );

@@ -1,4 +1,6 @@
-export const parsedRss = [
+import { IFeed } from '../../shared/domain/feed/models/i-feed';
+
+export const parsedRssMock: IFeed[] = [
   {
     description: "Statuspage",
     items: [
@@ -50,7 +52,8 @@ export const parsedRss = [
     ],
     link: "https://www.harveststatus.com",
     pubDate: "Sat, 04 Apr 2020 08:07:42 +0000",
-    title: "Harvest Status - Incident History"
+    title: "Harvest Status - Incident History",
+    name: 'Harvest'
   },
   {
     description: "Statuspage",
@@ -85,7 +88,8 @@ export const parsedRss = [
     ],
     link: "https://status.freshbooks.com",
     pubDate: "Sat, 04 Apr 2020 04:06:15 -0400",
-    title: "FreshBooks Status - Incident History"
+    title: "FreshBooks Status - Incident History",
+    name: 'Freshbooks'
   },
   {
     description: "Statuspage",
@@ -111,7 +115,8 @@ export const parsedRss = [
     ],
     link: "https://status.npmjs.org",
     pubDate: "Sat, 04 Apr 2020 08:05:35 +0000",
-    title: "npm, Inc. Status - Incident History"
+    title: "npm, Inc. Status - Incident History",
+    name: 'Npm'
   },
   {
     description: "Statuspage",
@@ -164,6 +169,7 @@ export const parsedRss = [
     ],
     link: "https://www.githubstatus.com",
     pubDate: "Sat, 04 Apr 2020 08:08:42 +0000",
-    title: "GitHub Status - Incident History"
+    title: "GitHub Status - Incident History",
+    name: 'GitHub',
   }
 ];

@@ -1,12 +1,15 @@
-import * as React from 'react';
+import React from 'react';
+import { IFeed } from '../../../shared/domain/feed/models/i-feed';
+import { IFeedChannel } from '../../../shared/domain/feed/models/i-feed-channel';
 import { FeedItem } from './FeedItem';
 
 interface IProps {
-  items: any;
+  channelList: IFeedChannel[];
+  feedList: IFeed[];
 }
 
 export const FeedList: React.FC<IProps> = (props: IProps) => {
-  if (props.items.length === 0) {
+  if (props.feedList.length === 0) {
     return (
       <section>
         <div>No Feeds</div>
@@ -17,11 +20,10 @@ export const FeedList: React.FC<IProps> = (props: IProps) => {
   return (
     <section>
       <ul>
-        {props.items.map((feed: any, index: number) => (
+        {props.feedList.map((feed: IFeed) => (
           <FeedItem
-            key={`feedItem-${index}`}
-            name={''}
-            url={''}
+            key={feed.name}
+            item={feed}
           />
         ))}
       </ul>
